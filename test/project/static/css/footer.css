@@ -1,0 +1,29 @@
+.end {
+    position: relative;
+    /* Use relative positioning */
+    background-color: var(--color2);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.end .connect {
+    padding-top: 5px;
+    margin-left: 50px;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+}
+
+.end img {
+    width: 20px;
+    height: 20px;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+}

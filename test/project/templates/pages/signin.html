@@ -1,0 +1,94 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Library</title>
+    <link rel="stylesheet" href="{%static 'css/signin.css'%}" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- <script src="signin.js"></script> -->
+  </head>
+
+  <body>
+    <nav>
+      <ul>
+        <li id="logo">
+          <img
+            src="{%static 'pics/logo19.png'%} "
+            width="200px"
+            height="120px"
+          />
+        </li>
+        <li><a href="{%url 'homepage'%} ">Home</a></li>
+        <li><a href=" {%url 'booklist'%} ">Browse Books</a></li>
+      </ul>
+    </nav>
+
+    <div class="form-container">
+      <div class="form">
+        <h1>Login</h1>
+        <form id="form" method="post">
+          {% csrf_token %}
+
+          <div class="login-username input-control">
+            <label for="login-username">Username:</label>
+            <div class="input-with-icon">
+              <input type="text" id="username" name="username" />
+              <i class="bx bxs-user"></i>
+              <div class="error"></div>
+            </div>
+          </div>
+          <div class="login-password input-control">
+            <label for="login-password">Password:</label>
+            <div class="input-with-icon">
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+              />
+              <i class="bx bxs-lock-alt"></i>
+              <div class="error"></div>
+            </div>
+          </div>
+          <div class="forgot-password">
+            <a href="forgot_password.html">Forgot password?</a>
+          </div>
+          <div class="remember-me">
+            <input type="checkbox" id="remember-me" name="remember-me" />
+            <label for="remember-me">Remember me</label>
+          </div>
+
+          <button type="submit" class="add">Login</button>
+
+          <div
+            style="font-size: 20px; text-align: center"
+            class="signup-container"
+          >
+            Don't have an account?
+            <a href="{%url 'signup'%} " class="signup">Sign Up</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="end">
+      <p>
+        <span style="font-weight: bold">Bookify Library</span>
+        <br />
+        Copyright &copy; 2024
+      </p>
+      <div class="connect">
+        CONNECT WITH US
+        <p class="logo">
+          <a href="#"> <img src=" {%static 'pics/facebook.png' %} " /></a>
+          <a href="#"> <img src="{%static 'pics/instagram.png' %} " /></a>
+          <a href="#"> <img src="{%static 'pics/twitter.png' %}" /></a>
+        </p>
+      </div>
+    </div>
+    <script src=" {%static 'js/signin copy 2.js'%} "></script>
+  </body>
+</html>

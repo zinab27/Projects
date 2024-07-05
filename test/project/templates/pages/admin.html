@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="This Is Our Online Library" />
+    <title>Online Library</title>
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/ad copy.js' %}"></script>
+  </head>
+
+  <body>
+    <script>
+      function toggleBooksid() {
+        var books = document.getElementById("books");
+        var orderid = document.getElementById("orderid");
+
+        if (books.style.display === "none") {
+          books.style.display = "block";
+          orderid.style.display = "none";
+        } else {
+          books.style.display = "none";
+          orderid.style.display = "block";
+        }
+      }
+
+      function toggleBookstitle() {
+        var books = document.getElementById("books");
+        var title = document.getElementById("ordertitle");
+        var orderid = document.getElementById("orderid");
+
+        if (books.style.display === "none") {
+          books.style.display = "block";
+          title.style.display = "none";
+        } else {
+          books.style.display = "none";
+          title.style.display = "block";
+        }
+        orderid.style.display = "none";
+      }
+    </script>
+
+    <nav>
+      <ul>
+        <li id="logo">
+          <img
+            src="{% static 'pics/logo15.png' %}"
+            width="200px"
+            height="120px"
+          />
+        </li>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+
+        <form class="search" action="{% url 'search_books' %}" method="post">
+          {% csrf_token %}
+          <div class="search-selector">
+            <select id="searchBook">
+              <option value="all">All</option>
+              <option value="title">Title</option>
+              <option value="author">Author</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+          <input
+            type="search"
+            class="search-input"
+            placeholder="Search"
+            id="searchQuery"
+          />
+          <input type="submit" value="Search" class="search-submit" />
+        </form>
+
+        <li style="position: absolute; right: 0">
+          <form
+            action="{% url 'logout' %}"
+            method="post"
+            style="display: inline"
+          >
+            {% csrf_token %}
+            <button
+              type="submit"
+              style="
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+              "
+            >
+              <a>Log Out</a>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+
+    <div align="center">
+      <button
+        class="add"
+        type="button"
+        onclick="window.location.href='add_book'"
+      >
+        Add Book
+      </button>
+      <form method="post" action="{% url 'delete_all_books' %}">
+        {% csrf_token %}
+        <button
+          id="deleteAll"
+          type="submit"
+          onclick="return confirm('Are you sure you want to delete all books?')"
+        >
+          Delete All Books
+        </button>
+      </form>
+
+      <button class="add" onclick="toggleBooksid()">Sort by Id</button>
+      <button class="add" onclick="toggleBookstitle()">Sort by Title</button>
+    </div>
+
+    <div id="list" class="container">
+      <div id="searchResults"></div>
+
+      <div id="books">
+        {% for book in books %}
+        <div class="book">
+          <img id="myFile" src="{{ book.image.url }}" alt="{{ book.title }}" />
+          <div class="text">
+            <h2 id="name">{{ book.title }}</h2>
+            <p id="author"><strong>Author:</strong> {{ book.author }}</p>
+            <p id="cat"><strong>Category:</strong> {{ book.genre }}</p>
+            <p id="date">
+              <strong>Published:</strong> {{ book.publisherDate }}
+            </p>
+            <p id="isbn"><strong>ISBN:</strong> {{ book.ISBN }}</p>
+            <p id="description">
+              <strong>Description:</strong> {{ book.description }}
+            </p>
+            <form method="post" action="{% url 'delete_book' book.id %}">
+              {% csrf_token %}
+              <button id="delete" type="submit">Delete Book</button>
+            </form>
+            <button
+              class="update"
+              type="button"
+              onclick="updateBook('{{book.photo.url}}' ,'{{ book.bookId }}', `{{ book.title }}`, '{{ book.author }}', '{{ book.genre }}', `{{ book.description }}`, '{{ book.publisherDate }}', '{{ book.ISBN }}', '{{ book.price }}')"
+            >
+              Update Book
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div id="orderid" style="display: none">
+        {%for book in orderid%}
+        <div class="book">
+          <img id="myFile" src="{{ book.image.url }}" alt="{{ book.title }}" />
+          <div class="text">
+            <h2 id="name">{{ book.title }}</h2>
+            <p id="author"><strong>Author:</strong> {{ book.author }}</p>
+            <p id="cat"><strong>Category:</strong> {{ book.genre }}</p>
+            <p id="date">
+              <strong>Published:</strong> {{ book.publisherDate }}
+            </p>
+            <p id="isbn"><strong>ISBN:</strong> {{ book.ISBN }}</p>
+            <p id="description">
+              <strong>Description:</strong> {{ book.description }}
+            </p>
+            <form method="post" action="{% url 'delete_book' book.id %}">
+              {% csrf_token %}
+              <button id="delete" type="submit">Delete Book</button>
+            </form>
+            <button
+              class="update"
+              type="button"
+              onclick="updateBook('{{book.photo.url}}' ,'{{ book.bookId }}', `{{ book.title }}`, '{{ book.author }}', '{{ book.genre }}', `{{ book.description }}`, '{{ book.publisherDate }}', '{{ book.ISBN }}', '{{ book.price }}')"
+            >
+              Update Book
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div id="ordertitle" style="display: none">
+        {%for book in ordertitle%}
+        <div class="book">
+          <img id="myFile" src="{{ book.image.url }}" alt="{{ book.title }}" />
+          <div class="text">
+            <h2 id="name">{{ book.title }}</h2>
+            <p id="author"><strong>Author:</strong> {{ book.author }}</p>
+            <p id="cat"><strong>Category:</strong> {{ book.genre }}</p>
+            <p id="date">
+              <strong>Published:</strong> {{ book.publisherDate }}
+            </p>
+            <p id="isbn"><strong>ISBN:</strong> {{ book.ISBN }}</p>
+            <p id="description">
+              <strong>Description:</strong> {{ book.description }}
+            </p>
+            <form method="post" action="{% url 'delete_book' book.id %}">
+              {% csrf_token %}
+              <button id="delete" type="submit">Delete Book</button>
+            </form>
+            <button
+              class="update"
+              type="button"
+              onclick="updateBook('{{book.photo.url}}' ,'{{ book.bookId }}', `{{ book.title }}`, '{{ book.author }}', '{{ book.genre }}', `{{ book.description }}`, '{{ book.publisherDate }}', '{{ book.ISBN }}', '{{ book.price }}')"
+            >
+              Update Book
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <script>
+      function updateBook(
+        photo,
+        id,
+        title,
+        author,
+        genre,
+        description,
+        published,
+        ISBN,
+        price
+      ) {
+        const url = `/books/admin/add_book/?id=${id}&title=${encodeURIComponent(
+          title
+        )}&author=${encodeURIComponent(author)}&genre=${encodeURIComponent(
+          genre
+        )}&description=${encodeURIComponent(
+          description
+        )}&published=${published}&ISBN=${ISBN}&price=${price}&photo=${photo}`;
+        window.location.href = url;
+      }
+    </script>
+
+    {% comment %}
+    <script>
+      $(document).ready(function () {
+        $(".search").submit(function (event) {
+          event.preventDefault();
+          let query = $("#searchQuery").val().toLowerCase();
+          let searchBy = $("#searchBook").val();
+
+          $(".book").each(function () {
+            let title = $(this).find("#name").text().toLowerCase();
+            let author = $(this).find("#author").text().toLowerCase();
+            let category = $(this).find("#cat").text().toLowerCase();
+            let shouldShow = false;
+
+            if (
+              (searchBy === "title" && title.includes(query)) ||
+              (searchBy === "author" && author.includes(query)) ||
+              (searchBy === "category" && category.includes(query)) ||
+              (searchBy === "all" &&
+                (title.includes(query) ||
+                  author.includes(query) ||
+                  category.includes(query)))
+            ) {
+              shouldShow = true;
+            }
+
+            $(this).toggle(shouldShow);
+          });
+        });
+      });
+    </script>
+    {% endcomment %}
+    <button class="Up" id="toUp">&#8593;</button>
+    <script src="{% static 'js/up.js' %}"></script>
+  </body>
+</html>
+{% include 'parts/footer.html'%}

@@ -1,0 +1,182 @@
+:root {
+  --color1: rgb(235, 231, 228);
+  --color2: rgb(82, 87, 64);
+  --color2edit: rgb(82, 110, 64);
+}
+
+body {
+  background-image: url(pics/homepage\ background.jpg);
+  background-repeat: no-repeat;
+  background-size: 100vw auto;
+  background-position: center;
+  background-origin: top;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  /* position: fixed; */
+}
+.end {
+  position: relative; /* Use relative positioning */
+  background-color: var(--color2);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.end .connect {
+  padding-top: 5px;
+  margin-left: 50px;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+}
+
+.end img {
+  width: 20px;
+  height: 20px;
+}
+
+#header {
+  color: var(--color2);
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.container {
+  border: 2px solid var(--color2);
+  border-radius: 28px;
+  margin-left: 150px;
+  margin-top: 80px;
+  width: 350px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  max-height: calc(
+    100vh - 160px
+  ); /* Adjusted to ensure the container fits within the viewport */
+  overflow-y: auto; /* Enable vertical scrolling for the container */
+  position: relative;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.add {
+  padding: 5px 10px;
+  background-color: var(--color2);
+  color: var(--color1);
+  border-radius: 10px;
+  cursor: pointer;
+  width: 50%;
+  margin: 3px 0;
+  display: inline-block;
+  box-sizing: border-box;
+  justify-self: center;
+}
+
+label {
+  display: block;
+  /* margin-left: 25px; */
+  color: var(--color2);
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+input[type="text"],
+textarea,
+input[type="date"] {
+  border: 2px solid #ccc;
+  border-radius: 28px;
+  /* margin-left: 25px; */
+  margin-bottom: 5px;
+  padding: 8px;
+  box-sizing: border-box;
+  width: 300px;
+}
+
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+input {
+  text-align: center;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+input[type="date"] {
+  text-align: left;
+}
+
+#myFile {
+  margin-left: 60px;
+}
+
+input[type="submit"]:hover {
+  transform: scale(1.1);
+}
+
+input[type="submit"] {
+  margin-top: 40px;
+  border: 2px solid var(--color2);
+  border-radius: 28px;
+  padding: 8px;
+  font-size: 15px;
+  background-color: var(--color2);
+  color: white;
+  /* Set text color to white */
+  text-align: center;
+  /* Center align text */
+  display: block;
+  /* Ensures button takes full width */
+  width: 100px;
+  margin: 25px auto 0;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+#logo {
+  display: flex;
+  justify-content: center;
+  border: none;
+}
+
+#logo img {
+  border: none;
+}
+
+.input-control {
+  margin-bottom: 15px;
+}
+
+.input-control input:focus {
+  outline: 0;
+}
+
+.input-control.success input {
+  border-color: #ccc;
+}
+
+.input-control.error input,
+.input-control.error textarea {
+  border-color: #ff3860;
+}
+
+.input-control .error {
+  color: #ff3860;
+  font-size: 14px;
+  text-align: center;
+}
