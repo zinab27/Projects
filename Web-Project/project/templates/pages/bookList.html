@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,350,0,0"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book List</title>
+    <link rel="stylesheet" href="{% static 'css/bookList.css' %}" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/ad copy.js' %}" defer></script>
+  </head>
+  <body>
+    <div>
+      <nav>
+        <ul>
+          <li id="logo"><img src="{% static 'pics/logo15.png' %}" /></li>
+          <li><a href="{% url 'homepage' %}">Home</a></li>
+          <li><a href="{% url 'booklist' %}">Browse Books</a></li>
+          <li id="login"><a href="{% url 'login' %}">Log in</a></li>
+          <li id="signup"><a href="{% url 'signup' %}">Sign Up</a></li>
+          <form class="search" action="{% url 'search_books' %}" method="post">
+            {% csrf_token %}
+            <div class="search-selector">
+              <select id="searchBook">
+                <option value="all">All</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="category">Category</option>
+              </select>
+            </div>
+            <input
+              type="search"
+              class="search-input"
+              placeholder="Search"
+              id="searchQuery"
+            />
+            <input type="submit" value="Search" class="search-submit" />
+          </form>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container">
+      <h3 id="itemCount">Total number of books: {{ books|length }}</h3>
+    </div>
+
+    <div id="books" class="book-list">
+      <div id="list">
+        <div id="searchResults">
+          {% for book in books %}
+          <div class="book">
+            <img
+              id="myFile"
+              src="{{ book.image.url }}"
+              alt="{{ book.title }}"
+            />
+            <div class="text">
+              <h2 id="name">{{ book.title }}</h2>
+              <p id="author"><strong>Author:</strong> {{ book.author }}</p>
+              <p id="cat"><strong>Category:</strong> {{ book.genre }}</p>
+              <p id="date">
+                <strong>Published:</strong> {{ book.publisherDate }}
+              </p>
+              <p id="isbn"><strong>ISBN:</strong> {{ book.ISBN }}</p>
+              <p id="description">
+                <strong>Description:</strong> {{ book.description }}
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <button class="Up" id="toUp">&#8593;</button>
+    <script src="{% static 'js/up.js' %}"></script>
+
+    <script></script>
+  </body>
+</html>
+{% include 'parts/footer.html'%}

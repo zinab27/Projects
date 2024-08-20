@@ -1,0 +1,136 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Details</title>
+    <link rel="stylesheet" href="{% static 'css/bookdetails.css' %}">
+</head>
+
+<body>
+    <div align="center">
+        <nav>
+            <ul style="position: relative;">
+                <li id="logo">
+                    <img src="{% static 'pics/logo15.png' %}">
+                </li>
+                <li><a href="{% url 'homepage' %}">Home</a></li>
+                {%if user.is_authenticated and user.is_staff%}
+                <li><a href="{% url 'admin' %}">Admin Panel</a></li>
+                {%elif user.is_authenticated and not user.is_staff%}
+                <li><a href="{% url 'borrow' %}">Browse Books</a></li>
+                <li><a href="{% url 'borrowed-books' %}">My Books</a></li>
+                {%endif%}
+                {%if user.is_authenticated%}
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            style="background: none; border: none; padding: 0; cursor: pointer;"><a>Log
+                                Out</a></button>
+                    </form>
+                </li>
+                {% else %}
+                <li id="browse"><a href="{% url 'booklist' %}">Browse Books</a></li>
+                <li id="login"><a href="{% url 'login' %}">Log in</li>
+                <li id="signup"><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <div class="container" id="book-details">
+
+
+        {% if message %}
+        <div class="book">
+            <h2>{{ message }}</h2>
+        </div>
+        {% else %}
+        <div class="book">
+            <h2>{{ title }}</h2>
+            <img src="{%static photo %}" width="250" height="350" />
+            <div class="rating" data-rating="0">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+
+            <p><strong>Author: </strong> {{ author }}</p>
+            <p><strong>Price: </strong> {{ price }}</p>
+            <p><strong>Category: </strong>{{category}}</p>
+            <p><strong>Description: </strong>{{description}}</p>
+
+            {% if user.is_authenticated and not user.is_staff and available%}
+            <button id="borrow" class="borrow-button" data-title="{{ title }}" onclick="borrowBook()">
+                Borrow
+            </button>
+            {%elif user.is_authenticated and not user.is_staff and not available%}
+            <button class="borrow-button">
+                Unavailable
+            </button>
+            {% endif %}
+        </div>
+        {%endif%}
+        <!-- Add other book details here -->
+    </div>
+
+    <script src="{% static 'js/bookdetails.js' %}"></script>
+
+    <script>
+        function borrowBook() {
+            const borrowBtn = document.getElementById('borrow')
+            const title = borrowBtn.getAttribute('data-title');
+            console.log("title: " + title);
+            // Send a POST request to the server to borrow the book
+            fetch('{% url "borrow_book" %}', {  // Update the URL to match the Django URL configuration
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'), // Get CSRF token from cookies
+                },
+                body: JSON.stringify({ title: title }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Book borrowed successfully, you can handle this as needed
+                        alert('Book borrowed successfully!');
+                    } else {
+                        // Error occurred, handle it accordingly
+                        alert('Error borrowing book.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
+        }
+
+
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</body>
+
+</html>
+{% include 'parts/footer.html'%}

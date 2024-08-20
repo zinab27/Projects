@@ -1,0 +1,386 @@
+{%load static%}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book List</title>
+  <link rel="stylesheet" href="{%static 'css/borrow.css'%}" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,350,0,0"
+    href="https://www.flaticon.com/free-icons/star" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  {% comment %}
+  <script src="logout.js"></script>
+  {% endcomment %}
+</head>
+
+<body>
+  <div align="center">
+    <nav>
+      <ul style="position: relative">
+        <li id="logo">
+          <img src="{%static 'pics/logo15.png'%}" width="200px" height="120px" />
+        </li>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'borrow' %}">Browse Books</a></li>
+        <li><a href="{% url 'borrowed-books' %}">My Books</a></li>
+        <div class="search" id="search">
+          <form class="search" action="{% url 'search_books' %}" method="post">
+            {% csrf_token %}
+            <div class="search-selector">
+              <select id="searchBook">
+                <option value="all">All</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+              </select>
+            </div>
+            <input type="search" class="search-input" placeholder="Search" id="searchQuery" />
+            <input type="submit" value="Search" class="search-submit" />
+          </form>
+        </div>
+
+
+        <li style="position: absolute; right: 0">
+          <form action="{% url 'logout' %}" method="post" style="display: inline">
+            {% csrf_token %}
+            <button type="submit" style="
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                  ">
+              <a>Log Out</a>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="genres">
+      <button id="all" class="genre-button">All</button>
+      <button id="fiction" class="genre-button">Fiction</button>
+      <button id="romance" class="genre-button">Romance</button>
+      <button id="kids" class="genre-button">Kids</button>
+      <button id="thriller" class="genre-button">Thriller</button>
+      <button id="fantasy" class="genre-button">Fantasy</button>
+      <button id="horror" class="genre-button">Horror</button>
+      <button id="newbut" class="genre-button">Recently Added</button>
+    </div>
+
+    <!-- Fiction Books -->
+    <div class="type" id="fiction-books">
+      <h2><a>Fiction</a></h2>
+      <br />
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="1">
+            {% for book in books %} {% if book.genre == 'Fiction' %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight(1)">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft(1)">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Romance-Books -->
+    <div class="type" id="romance-books">
+      <h2><a href="Romance.html">Romance</a></h2>
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="2">
+            {% for book in books %} {% if book.genre == 'Romance' %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight(2)">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft(2)">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="type" id="kids-books">
+      <h2><a href="kids.html">Kids</a></h2>
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="3">
+            {% for book in books %} {% if book.genre == 'Kids' %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight(3)">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft(3)">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="type" id="thriller-books">
+      <h2><a href="Thriller.html"> Thriller</a></h2>
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="4">
+            {% for book in books %} {% if book.genre == 'Thriller' %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight(4)">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft(4)">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="type" id="fantasy-books">
+      <h2><a>Fantasy</a></h2>
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="5">
+            {% for book in books %} {% if book.genre == 'Fantasy' %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight(5)">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft(5)">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="type" id="horror-books">
+      <h2><a>Horror</a></h2>
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="6">
+            {% for book in books %} {% if book.genre == 'Horror' %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight('6')">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft('6')">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="type" id="new-books">
+      <h2><a href="#">New Books</a></h2>
+      <div class="book-carousel">
+        <div class="list">
+          <ul class="book-list" id="new">
+            {% for book in books %} {% if book.genre not in categories %}
+            <li class="book">
+              <div class="image-container">
+                <a>
+                  <!--href="bookdetails.html?title=${tmp}"-->
+                  <img src="{{book.image.url}}" width="250" height="350" />
+                </a>
+                <div class="book-info">
+                  <div class="book-name" style="font-size: larger">
+                    {{book.title}}
+                  </div>
+                  <div class="book-author" style="font-size: larger">
+                    {{book.author}}
+                  </div>
+                </div>
+              </div>
+              <div class="borrow-button-container">
+                {%if book.available%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton">Borrow</a>
+                {%else%}
+                <a href="{% url 'book_detail' book.title %}" class="borrow-button available libraryButton"
+                  style="background-color: dimgray;">Unavailable</a>
+                {%endif%}
+              </div>
+            </li>
+            {%endif%} {% endfor %}
+          </ul>
+          <button class="arrow right-arrow" onclick="scrollBooksRight('new')">
+            &#10095;
+          </button>
+          <button class="arrow left-arrow" onclick="scrollBooksLeft('new')">
+            &#10094;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="Up" id="toUp">&#8593;</button>
+  <script src="{%static 'js/up.js'%}"></script>
+
+  <script src="{%static 'js/borrow copy.js'%}"></script>
+
+
+  {% comment %}
+  <script src="{%static 'js/borrow.js'%}"></script>
+  {% endcomment %}
+</body>
+
+</html>
+{% include 'parts/footer.html'%}

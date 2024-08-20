@@ -1,0 +1,116 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Library</title>
+  <link rel="stylesheet" href=" {%static 'css/nav.css'%}" />
+  <link rel="stylesheet" href="{% static 'css/add.css'%}" />
+  <script src="logout.js"></script>
+  <script>
+    const adminUrl = "{% url 'admin' %}";
+  </script>
+</head>
+
+<body>
+  <div align="center">
+    <nav>
+      <ul>
+        <li id="logo">
+          <img src="{%static 'pics/logo19.png' %} " width="200px" height="60px" />
+        </li>
+        <li><a href=" {%url 'homepage'%}">Home</a></li>
+        <li><a href=" {%url 'admin'%}">Browse Books</a></li>
+        <li style="position: absolute; right: 0;">
+          <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;"><a>Log
+                Out</a></button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container" align="center" id="form">
+    <h2 id="header" align="center">Add Book</h2>
+    <form class="form" method="post" enctype="multipart/form-data" action="{% url 'addBook' %}" id="add-form">
+      {% csrf_token %}
+      <div class="bookID input-control">
+        <label for="add">Book ID</label>
+        <input id="id" type="text" name="add" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="book-name input-control">
+        <label for="name">Book Name</label>
+        <input id="name" type="text" name="title" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="book-author input-control">
+        <label for="author">Author</label>
+        <input id="author" type="text" name="author" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="book-category input-control">
+        <label for="cat">Category</label>
+        <input id="cat" type="text" name="genre" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="book-description input-control">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="Enter a description" cols="15" rows="2"></textarea>
+        <div class="error"></div>
+      </div>
+
+      <div class="book-date input-control">
+        <label for="date">Date of publication</label>
+        <input id="date" type="date" name="date" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="book-isbn input-control">
+        <label for="isbn">ISBN</label>
+        <input id="isbn" type="text" name="ISBN" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="book-price input-control">
+        <label for="price">Price</label>
+        <input id="price" type="text" name="price" required />
+        <div class="error"></div>
+      </div>
+
+      <div class="input-control">
+        <label for="myFile"> Photo of Book </label>
+        <input type="file" id="myFile" name="filename" />
+        <div class="error"></div>
+      </div>
+      <input id="submit" class="add" type="submit" value="Add" />
+    </form>
+  </div>
+  <div class="end">
+    <p>
+      <span style="font-weight: bold">Bookify Library</span>
+      <br />
+      Copyright &copy; 2024
+    </p>
+    <div class="connect">
+      CONNECT WITH US
+      <p class="logoend">
+        <a href="#"> <img src="{%static 'pics/facebook.png'%}" /></a>
+        <a href="#"> <img src="{%static 'pics/instagram.png'%}" /></a>
+        <a href="#"> <img src="{% static 'pics/twitter.png'%}" /></a>
+      </p>
+    </div>
+  </div>
+  <script src="{% static 'js/add copy.js'%}"></script>
+</body>
+
+</html>
