@@ -16,8 +16,7 @@ def bookList(request):
 
 def homepage(request):
     books = Book.objects.all()[:8]
-
-    return render(request, 'pages/homepage.html', {'books' : books})
+    return render(request, 'pages/index.html', {'books' : books})
 # Create your views here.
 
 def book(request):
@@ -110,7 +109,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('homepage')
+            return redirect('index')
         else:
             print('false')
         
@@ -133,7 +132,7 @@ def borrow(request):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('homepage')  # Redirect to the homepage after logout
+        return redirect('index')  # Redirect to the homepage after logout
     return JsonResponse({'status': 'error'}, status=405)
 
 

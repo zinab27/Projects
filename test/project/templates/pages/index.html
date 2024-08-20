@@ -22,7 +22,7 @@
                 <li id="logo">
                     <img src="{%static 'pics/logo19.png' %} " width="200px" height="60px">
                 </li>
-                <li><a href=" {%url 'homepage'%}">Home</a></li>
+                <li><a href=" {%url 'index'%}">Home</a></li>
 
                 {% if user.is_authenticated and user.is_staff %}
                 <li id="admin"><a href="{% url 'admin' %}">Admin Panel</a></li>

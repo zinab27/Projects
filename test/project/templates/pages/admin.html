@@ -51,7 +51,7 @@
             height="120px"
           />
         </li>
-        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'index' %}">Home</a></li>
 
         <form class="search" action="{% url 'search_books' %}" method="post">
           {% csrf_token %}
