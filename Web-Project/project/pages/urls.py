@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     #path('',views.index,name='index'),#name is the name of %url % used in dynamic pages
+        path('',views.homepage,name='homepage'),
     path('homepage',views.homepage,name='homepage'),
     path('booklist',views.bookList,name='booklist'),
     # path('borrow/book_details/<str:title>/', views.bookDetail, name='book_detail'),
